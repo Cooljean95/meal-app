@@ -1,6 +1,6 @@
 export type RootStackParamList = {
   Home: undefined;
-  Meals: undefined;
+  Meals: { dietId: string };
   Meal: { mealId: string };
 };
 

@@ -1,11 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { Diet } from '../types';
+import { Button, Card, LoadingSpinner } from '../components';
 
 type RootStackParamList = {
   Home: undefined;
-  Meals: undefined;
+  Meals: { dietId: string };
   Meal: { mealId: string };
 };
 
@@ -13,18 +15,109 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'H
 
 export default function Home() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const [diets, setDiets] = useState<Diet[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+
+  const fetchDiets = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const apiKey = process.env.EXPO_PUBLIC_API_PASSWORD;
+      const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.204:8080';
+
+      const response = await fetch(`${apiUrl}/api/diets`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-API-Key': apiKey,
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setDiets(data);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Ukjent feil';
+      setError(`Kunne ikke hente dietter: ${errorMessage}`);
+      console.error('Fetch error:', err);
+      
+      Alert.alert(
+        'Feil ved lasting',
+        'Kunne ikke hente diett-data. Sjekk at serveren kjører på localhost:8080',
+        [{ text: 'OK' }]
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDiets();
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Velkommen til Meal App!</Text>
       <Text style={styles.subtitle}>Din personlige måltidsplanlegger</Text>
       
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => navigation.navigate('Meals')}
-      >
-        <Text style={styles.buttonText}>Se alle måltider</Text>
-      </TouchableOpacity>
+      {loading && (
+        <LoadingSpinner text="Henter dietter..." />
+      )}
+
+      {error && (
+        <Card style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+          <Button 
+            title="Prøv igjen" 
+            onPress={fetchDiets} 
+            variant="danger"
+            size="medium"
+          />
+        </Card>
+      )}
+
+      {!loading && !error && diets.length > 0 && (
+        <View style={styles.dietsContainer}>
+          <Image 
+            source={require('../assets/foodBowl.png')}
+            style={styles.foodBowlImage}
+          />
+          <FlatList
+            key="diet-list-2-columns"
+            data={diets}
+            renderItem={({ item }) => (
+              <View style={styles.dietButtonContainer}>
+                <Button 
+                  title={item.name}
+                  onPress={() => navigation.navigate('Meals', { dietId: item.id })}
+                  variant="primary"
+                  size="medium"
+                  textStyle={{ 
+                    textAlign: 'right',
+                    width: '100%'
+                  }}
+                />
+              </View>
+            )}
+            numColumns={2}
+            columnWrapperStyle={styles.row}
+            keyExtractor={(item) => item.id}
+            style={styles.dietsList}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      )}
+
+      {!loading && !error && diets.length === 0 && (
+        <Text style={styles.noDietsText}>Ingen dietter funnet</Text>
+      )}
     </View>
   );
 }
@@ -32,9 +125,9 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#FEF7E8',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     padding: 20,
   },
   title: {
@@ -47,19 +140,62 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     color: '#666',
-    marginBottom: 40,
+    marginBottom: 20,
     textAlign: 'center',
   },
-  button: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 30,
-    paddingVertical: 15,
-    borderRadius: 10,
-    marginVertical: 10,
+  errorContainer: {
+    backgroundColor: '#fee',
+    borderWidth: 1,
+    borderColor: '#fcc',
+    marginVertical: 20,
   },
-  buttonText: {
-    color: 'white',
+  errorText: {
     fontSize: 16,
+    color: '#c33',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  dietsContainer: {
+    flex: 1,
+    width: '100%',
+    marginVertical: 20,
+  },
+  foodBowlImage: {
+    width: 300,
+    height: 300,
+    marginBottom: 15,
+    alignSelf: 'center',
+    borderRadius: 10,
+  },
+  dietsList: {
+    flex: 1,
+    width: '100%',
+  },
+  row: {
+    justifyContent: 'space-around',
+    paddingHorizontal: 5,
+  },
+  dietButtonContainer: {
+    flex: 1,
+    marginHorizontal: 5,
+    marginVertical: 8,
+    paddingHorizontal: 5,
+  },
+  dietName: {
+    fontSize: 18,
     fontWeight: '600',
+    color: '#333',
+    marginBottom: 5,
+  },
+  dietDescription: {
+    fontSize: 14,
+    color: '#666',
+    lineHeight: 20,
+  },
+  noDietsText: {
+    fontSize: 16,
+    color: '#666',
+    fontStyle: 'italic',
+    marginVertical: 20,
   },
 });

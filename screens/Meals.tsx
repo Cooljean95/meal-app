@@ -1,15 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Card } from '../components';
 
 type RootStackParamList = {
   Home: undefined;
-  Meals: undefined;
+  Meals: { dietId: string };
   Meal: { mealId: string };
 };
 
 type MealsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Meals'>;
+type MealsScreenProps = NativeStackScreenProps<RootStackParamList, 'Meals'>;
 
 // Dummy data for testing
 const mealsList = [
@@ -22,14 +24,15 @@ const mealsList = [
 
 export default function Meals() {
   const navigation = useNavigation<MealsScreenNavigationProp>();
+  const route = useRoute<MealsScreenProps['route']>();
+  const { dietId } = route.params;
 
   const renderMealItem = ({ item }: { item: typeof mealsList[0] }) => (
-    <TouchableOpacity 
-      style={styles.mealItem}
-      onPress={() => navigation.navigate('Meal', { mealId: item.id })}
-    >
-      <Text style={styles.mealName}>{item.name}</Text>
-      <Text style={styles.mealCuisine}>{item.cuisine}</Text>
+    <TouchableOpacity onPress={() => navigation.navigate('Meal', { mealId: item.id })}>
+      <Card>
+        <Text style={styles.mealName}>{item.name}</Text>
+        <Text style={styles.mealCuisine}>{item.cuisine}</Text>
+      </Card>
     </TouchableOpacity>
   );
 
