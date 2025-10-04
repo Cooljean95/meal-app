@@ -1,24 +1,42 @@
 export type Diet = {
-  id: string;
-  name: string;
-  picture: string | null;
-  description: string;
+    id: number;
+    name: string;
+    picture: string | null;
+    description: string;
+};
+
+export type Meals = {
+    id: number;
+    name: string;
+    prepTime: number;
+    description: string;
+    kcal: number;
+    dietId: number;
 };
 
 export type Meal = {
-  id: string;
-  name: string;
-  cuisine: string;
-  prepTime: string;
-  servings: number;
-  ingredients: string[];
-  instructions: string[];
-  dietId?: string; // Link to diet if needed
+    id: number;
+    name: string;
+    prepTime: number;
+    ingredients: Ingredient[];
+    category: Category[];
+    recipe: string;
+    kcal: number;
+    dietId: number;
 };
 
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  preferredDiets?: string[]; // Array of diet IDs
+export type Ingredient = {
+    id: number;
+    name: string;
+    allergens: Allergy[];
+};
+
+export type Allergy = {
+    id: number;
+    name: string;
+};
+
+export type Category = {
+    id: number;
+    name: string;
 };

@@ -18,12 +18,14 @@ This is a cross-platform mobile application developed using React Native and Exp
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone <repository-url>
    cd meal-app
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```

@@ -1,0 +1,17 @@
+# Ignore artifacts:
+build
+coverage
+node_modules
+.expo
+.expo-shared
+dist
+web-build
+
+# Ignore config files
+*.config.js
+*.config.ts
+app.json
+package-lock.json
+
+# Ignore generated files
+*.d.ts

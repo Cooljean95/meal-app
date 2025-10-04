@@ -4,11 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { Diet } from '../types';
 import { Button, Card, LoadingSpinner } from '../components';
+import MealService from '../service/MealService';
 
 type RootStackParamList = {
   Home: undefined;
-  Meals: { dietId: string };
-  Meal: { mealId: string };
+  Meals: { dietId: number };
+  Meal: { mealId: number };
 };
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
@@ -25,29 +26,13 @@ export default function Home() {
       setLoading(true);
       setError(null);
 
-      const apiKey = process.env.EXPO_PUBLIC_API_PASSWORD;
-      const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.204:8080';
-
-      const response = await fetch(`${apiUrl}/api/diets`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'X-API-Key': apiKey,
-        },
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
+      const data = await MealService.fetchDiets();
       setDiets(data);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Ukjent feil';
       setError(`Kunne ikke hente dietter: ${errorMessage}`);
       console.error('Fetch error:', err);
-      
+
       Alert.alert(
         'Feil ved lasting',
         'Kunne ikke hente diett-data. Sjekk at serveren kjører på localhost:8080',
@@ -66,7 +51,7 @@ export default function Home() {
     <View style={styles.container}>
       <Text style={styles.title}>Velkommen til Meal App!</Text>
       <Text style={styles.subtitle}>Din personlige måltidsplanlegger</Text>
-      
+
       {loading && (
         <LoadingSpinner text="Henter dietter..." />
       )}
@@ -74,9 +59,9 @@ export default function Home() {
       {error && (
         <Card style={styles.errorContainer}>
           <Text style={styles.errorText}>{error}</Text>
-          <Button 
-            title="Prøv igjen" 
-            onPress={fetchDiets} 
+          <Button
+            title="Prøv igjen"
+            onPress={fetchDiets}
             variant="danger"
             size="medium"
           />
@@ -85,8 +70,8 @@ export default function Home() {
 
       {!loading && !error && diets.length > 0 && (
         <View style={styles.dietsContainer}>
-          <Image 
-            source={require('../assets/foodBowl.png')}
+          <Image
+            source={require('../assets/food_bowl.png')}
             style={styles.foodBowlImage}
           />
           <FlatList
@@ -94,12 +79,12 @@ export default function Home() {
             data={diets}
             renderItem={({ item }) => (
               <View style={styles.dietButtonContainer}>
-                <Button 
+                <Button
                   title={item.name}
                   onPress={() => navigation.navigate('Meals', { dietId: item.id })}
                   variant="primary"
                   size="medium"
-                  textStyle={{ 
+                  textStyle={{
                     textAlign: 'right',
                     width: '100%'
                   }}
@@ -108,7 +93,7 @@ export default function Home() {
             )}
             numColumns={2}
             columnWrapperStyle={styles.row}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(diet) => diet.id.toString()}
             style={styles.dietsList}
             showsVerticalScrollIndicator={false}
           />
