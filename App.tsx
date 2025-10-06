@@ -26,7 +26,7 @@ export default function App() {
           },
         }}
       >
-        <Stack.Screen name="Home" component={Home} options={{ title: 'Hjem' }} />
+        <Stack.Screen name="Home" component={Home} options={{ title: 'Diet' }} />
         <Stack.Screen name="Meals" component={Meals} options={{ title: 'Meals' }} />
         <Stack.Screen name="Meal" component={Meal} options={{ title: 'Meal Details' }} />
       </Stack.Navigator>
