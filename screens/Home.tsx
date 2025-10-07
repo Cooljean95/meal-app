@@ -33,11 +33,11 @@ export default function Home() {
 
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return Array('Good morning', 'Breakfast');
-    if (hour < 16) return Array('Good afternoon', 'Lunch');
-    if (hour < 20) return Array('Good evening', 'Dinner');
-    if (hour >= 20) return Array('Good night', 'Snack');
-    return Array('Good day', 'Food');
+    if (hour < 12) return ['Good morning', 'Breakfast'];
+    if (hour < 16) return ['Good afternoon', 'Lunch'];
+    if (hour < 20) return ['Good evening', 'Dinner'];
+    if (hour >= 20) return ['Good night', 'Snack'];
+    return ['Good day', 'Food'];
   };
 
   const fetchWeather = async () => {

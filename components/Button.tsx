@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 
     // Text colors for variants
     primaryText: {
-        color: 'Black',
+        color: 'black',
     },
     secondaryText: {
         color: 'white', //To be decided
