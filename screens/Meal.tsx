@@ -7,7 +7,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 type RootStackParamList = {
   Home: undefined;
   Meals: undefined;
-  Meal: { mealId: string };
+  Meal: { mealId: number };
 };
 
 type MealScreenRouteProp = RouteProp<RootStackParamList, 'Meal'>;
@@ -93,7 +93,7 @@ export default function Meal() {
         ))}
       </View>
 
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}
       >

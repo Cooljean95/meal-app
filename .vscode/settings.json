@@ -1,0 +1,10 @@
+{
+    "typescript.preferences.excludePackages": [
+        "node_modules"
+    ],
+    "typescript.disableAutomaticTypeAcquisition": true,
+    "files.exclude": {
+        "**/node_modules": true
+    },
+    "editor.formatOnSave": true
+}

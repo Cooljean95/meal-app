@@ -18,20 +18,13 @@ This is a cross-platform mobile application developed using React Native and Exp
 ### Installation
 
 1. Clone the repository:
-   ```bash
    git clone <repository-url>
-   cd meal-app
-   ```
 
 2. Install dependencies:
-   ```bash
    npm install
-   ```
 
 3. Start the development server:
-   ```bash
    npm start
-   ```
 
 ## 🛠️ Available Scripts
 
@@ -56,12 +49,13 @@ meal-app/
 ├── index.ts             # Entry point
 ├── package.json         # Project dependencies and scripts
 ├── tsconfig.json        # TypeScript configuration
-├── app.json            # Expo configuration
-└── assets/             # Static assets (icons, images)
-    ├── adaptive-icon.png
-    ├── favicon.png
-    ├── icon.png
-    └── splash-icon.png
+├── app.json             # Expo configuration
+├── assets/              # Static assets (icons, images)
+├── screens/             # Screen components (Home, Meals, Meal)
+├── components/          # Reusable UI components (Button, Card,)
+├── types/               # TypeScript type definitions
+└── service/             # API service layer for data fetching
+
 ```
 
 ## 🔧 Development
