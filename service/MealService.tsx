@@ -37,9 +37,9 @@ const fetchDiets = async (): Promise<Diet[]> => {
 };
 
 // Fetch meals by diet ID
-const fetchMealsByDietId = async (dietId: string): Promise<Meals[]> => {
+const fetchMealsByDietId = async (dietId: number): Promise<Meals[]> => {
     try {
-        const response = await fetch(`${getApiConfig().apiUrl}/api/diets/${dietId}/meals`, {
+        const response = await fetch(`${getApiConfig().apiUrl}/api/diets/${dietId.toString()}/meals`, {
             method: 'GET',
             headers: createHeaders(),
         });
@@ -57,9 +57,9 @@ const fetchMealsByDietId = async (dietId: string): Promise<Meals[]> => {
 };
 
 // Fetch a single meal by ID
-const fetchMealById = async (mealId: string): Promise<Meal> => {
+const fetchMealById = async (mealId: number): Promise<Meal> => {
     try {
-        const response = await fetch(`${getApiConfig().apiUrl}/api/meals/${mealId}`, {
+        const response = await fetch(`${getApiConfig().apiUrl}/api/meals/${mealId.toString()}`, {
             method: 'GET',
             headers: createHeaders(),
         });
