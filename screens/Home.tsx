@@ -31,6 +31,15 @@ export default function Home() {
     main: { temp: 0 }
   });
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return Array('Good morning', 'Breakfast');
+    if (hour < 16) return Array('Good afternoon', 'Lunch');
+    if (hour < 20) return Array('Good evening', 'Dinner');
+    if (hour >= 20) return Array('Good night', 'Snack');
+    return Array('Good day', 'Food');
+  };
+
   const fetchWeather = async () => {
     try {
       const data = await WeatherService.fetchWeather();
@@ -78,8 +87,8 @@ export default function Home() {
           {Math.round(weather?.main.temp) + '°C'}
         </Text>
       </View>
-      <Text style={styles.welcomeText}>Good morning</Text>
-      <Text style={styles.subtitle}>Time to feast!</Text>
+      <Text style={styles.welcomeText}>{getGreeting()[0]}</Text>
+      <Text style={styles.subtitle}>Time for {getGreeting()[1]}!</Text>
 
       {loading && (
         <LoadingSpinner text="Fetching diets..." />
