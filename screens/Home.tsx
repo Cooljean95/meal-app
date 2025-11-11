@@ -10,7 +10,7 @@ import WeatherService from '../service/WeatherService';
 
 type RootStackParamList = {
   Home: undefined;
-  Meals: { dietId: number };
+  Meals: { dietId: number, dietName: string };
   Meal: { mealId: number };
 };
 
@@ -119,7 +119,7 @@ export default function Home() {
               <View style={styles.dietButtonContainer}>
                 <TouchableOpacity
                   style={styles.dietItemContainer}
-                  onPress={() => navigation.navigate('Meals', { dietId: item.id })}
+                  onPress={() => navigation.navigate('Meals', { dietId: item.id, dietName: item.name })}
                 >
                   {IconComponent.dietIconMap(item.name, 33, '#666')}
                   <Text style={styles.dietName}>

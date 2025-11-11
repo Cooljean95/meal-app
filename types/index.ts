@@ -8,9 +8,11 @@ export type Diet = {
 export type Meals = {
     id: number;
     name: string;
+    picture: string | null;
     prepTime: number;
     description: string;
-    kcal: number;
+    recipe: string;
+    calories: number;
     dietId: number;
 };
 
