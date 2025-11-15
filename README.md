@@ -1,3 +1,5 @@
+[![CI/CD](https://github.com/Cooljean95/meal-app/actions/workflows/ci.yml/badge.svg)](https://github.com/Cooljean95/meal-app/actions/workflows/ci.yml)
+
 # Meal App
 
 A React Native mobile application built with Expo for managing meals and recipes.
