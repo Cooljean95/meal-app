@@ -80,7 +80,9 @@ export default function Meal() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Ingredienser</Text>
         {meal.ingredients.map((ingredient: string, index: number) => (
-          <Text key={index} style={styles.ingredient}>• {ingredient}</Text>
+          <Text key={index} style={styles.ingredient}>
+            • {ingredient}
+          </Text>
         ))}
       </View>
 
@@ -93,10 +95,7 @@ export default function Meal() {
         ))}
       </View>
 
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Text style={styles.backButtonText}>Tilbake til måltider</Text>
       </TouchableOpacity>
     </ScrollView>

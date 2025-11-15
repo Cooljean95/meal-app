@@ -53,7 +53,11 @@ export default function App() {
             ),
           })}
         />
-        <Stack.Screen name="CreateMeal" component={CreateMeal} options={{ title: 'Create New Meal' }} />
+        <Stack.Screen
+          name="CreateMeal"
+          component={CreateMeal}
+          options={{ title: 'Create New Meal' }}
+        />
         <Stack.Screen name="Meal" component={Meal} options={{ title: 'Meal Details' }} />
       </Stack.Navigator>
       <StatusBar style="light" />

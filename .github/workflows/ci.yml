@@ -2,43 +2,43 @@ name: CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
     branches:
 
 jobs:
   test-and-lint:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: TypeScript check
-      run: npx tsc --noEmit
-      
-    - name: Prettier format check
-      run: npm run format:check
-      
-    - name: Cache Expo CLI
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-          
-    - name: Setup Expo CLI
-      run: npm install -g @expo/cli
-      
-    - name: Expo Doctor (Health Check)
-      run: expo doctor
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Prettier format check
+        run: npm run format:check
+
+      - name: Cache Expo CLI
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Setup Expo CLI
+        run: npm install -g @expo/cli
+
+      - name: Expo Doctor (Health Check)
+        run: expo doctor

@@ -10,7 +10,7 @@ import WeatherService from '../service/WeatherService';
 
 type RootStackParamList = {
   Home: undefined;
-  Meals: { dietId: number, dietName: string };
+  Meals: { dietId: number; dietName: string };
   Meal: { mealId: number };
 };
 
@@ -28,7 +28,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [weather, setWeather] = useState<WeatherData>({
     weather: [{ main: 'few clouds' }],
-    main: { temp: 0 }
+    main: { temp: 0 },
   });
 
   const getGreeting = () => {
@@ -61,11 +61,7 @@ export default function Home() {
       setError(`Could not fetch diets: ${errorMessage}`);
       console.error('Fetch error:', err);
 
-      Alert.alert(
-        'Error loading diets',
-        'Could not fetch diet data.',
-        [{ text: 'OK' }]
-      );
+      Alert.alert('Error loading diets', 'Could not fetch diet data.', [{ text: 'OK' }]);
     } finally {
       setLoading(false);
     }
@@ -83,35 +79,23 @@ export default function Home() {
           source={IconComponent.weatherIconMap(weather?.weather[0].main.toLowerCase())}
           style={styles.weatherIcon}
         />
-        <Text style={styles.temperatureText}>
-          {Math.round(weather?.main.temp) + '°C'}
-        </Text>
+        <Text style={styles.temperatureText}>{Math.round(weather?.main.temp) + '°C'}</Text>
       </View>
       <Text style={styles.welcomeText}>{getGreeting()[0]}</Text>
       <Text style={styles.subtitle}>Time for {getGreeting()[1]}!</Text>
 
-      {loading && (
-        <LoadingSpinner text="Fetching diets..." />
-      )}
+      {loading && <LoadingSpinner text="Fetching diets..." />}
 
       {error && (
         <Card style={styles.errorContainer}>
           <Text style={styles.errorText}>{error}</Text>
-          <Button
-            title="Try Again"
-            onPress={fetchDiets}
-            variant="danger"
-            size="medium"
-          />
+          <Button title="Try Again" onPress={fetchDiets} variant="danger" size="medium" />
         </Card>
       )}
 
       {!loading && !error && diets.length > 0 && (
         <View style={styles.dietsContainer}>
-          <Image
-            source={require('../assets/food_bowl.png')}
-            style={styles.foodBowlImage}
-          />
+          <Image source={require('../assets/food_bowl.png')} style={styles.foodBowlImage} />
           <FlatList
             key="diet-list-2-columns"
             data={diets}
@@ -119,7 +103,9 @@ export default function Home() {
               <View style={styles.dietButtonContainer}>
                 <TouchableOpacity
                   style={styles.dietItemContainer}
-                  onPress={() => navigation.navigate('Meals', { dietId: item.id, dietName: item.name })}
+                  onPress={() =>
+                    navigation.navigate('Meals', { dietId: item.id, dietName: item.name })
+                  }
                 >
                   {IconComponent.dietIconMap(item.name, 33, '#666')}
                   <Text style={styles.dietName}>
@@ -129,7 +115,7 @@ export default function Home() {
               </View>
             )}
             numColumns={2}
-            keyExtractor={(diet) => diet.id.toString()}
+            keyExtractor={diet => diet.id.toString()}
           />
         </View>
       )}
