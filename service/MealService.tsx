@@ -1,4 +1,4 @@
-import type { Diet, Meal, Meals } from '../types';
+import type { Category, Diet, Meal, Meals } from '../types';
 
 // Function to get API configuration
 const getApiConfig = () => ({
@@ -76,10 +76,31 @@ const fetchMealById = async (mealId: number): Promise<Meal> => {
     }
 };
 
+// Fetch a list of categorys
+const fetchCategory = async (): Promise<Category> => {
+    try {
+        const response = await fetch(`${getApiConfig().apiUrl}/api/category`, {
+            method: 'GET',
+            headers: createHeaders(),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('MealService - fetchCategory error:', error);
+        throw error;
+    }
+};
+
 const MealService = {
     fetchDiets,
     fetchMealsByDietId,
     fetchMealById,
+    fetchCategory
 };
 
 export default MealService;
